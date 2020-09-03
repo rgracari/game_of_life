@@ -1,12 +1,5 @@
 #include "lib.h"
 
-void PrintIntro()
-{
-    printf("----------------------------------\n");
-    printf("---------- GAME OF LIFE ----------\n");
-    printf("----------------------------------\n");
-}
-
 void waitFor(unsigned int secs)
 {
     unsigned int retTime = time(0) + secs;
@@ -15,6 +8,7 @@ void waitFor(unsigned int secs)
     }
 }
 
+/*
 void PrintGrid(char **grid, int gridWidth)
 {
     for (int y = 0; y < gridWidth; y++)
@@ -41,19 +35,14 @@ void PopulateCells(char **grid, int gridWidth, int rate)
         }
     }
 }
-
+*/
+/*
 void NewGeneration(char **grid, int gridWidth)
 {
     // ( y  x) ( y x) (y x)
     // ( 1 -1) ( 1 0) ( 1 1)
     // ( 0 -1) ( 0 0) ( 0 1)
     // (-1 -1) (-1 0) (-1 1)
-
-    typedef struct SPos
-    {
-        int x;
-        int y;
-    } Postition;
 
     Postition neighbors[8] = {
         {1, -1},
@@ -108,7 +97,9 @@ void NewGeneration(char **grid, int gridWidth)
     }
     FreeGrid(copy, gridWidth);
 }
+*/
 
+/*
 char **CopyGrid(char **grid, int gridWidth)
 {
     char **copy = CreateGrid(gridWidth);
@@ -121,22 +112,29 @@ char **CopyGrid(char **grid, int gridWidth)
     }
     return copy;
 }
-
-char **CreateGrid(int gridWidth)
+*/
+Grid* CreateGrid(int gridWidth)
 {
-    char **grid = (char **)malloc(gridWidth * sizeof(char *));
+    Grid *gridPtr = (Grid*)malloc(sizeof(Grid));
+    gridPtr->gridWidth = gridWidth;
+
+    gridPtr->grid = (char **)malloc(gridWidth * sizeof(char *));
     for (int i = 0; i < gridWidth; i++)
     {
-        grid[i] = (char *)malloc(gridWidth * sizeof(char));
+        gridPtr->grid[i] = (char *)malloc(gridWidth * sizeof(char));
     }
-    return grid;
+    return gridPtr;
 }
 
-void FreeGrid(char **grid, int gridWidth)
+void FreeGrid(Grid* grid)
 {
-    for (int i = 0; i < gridWidth; i++)
+    if (grid != NULL)
     {
-        free(grid[i]);
+        for (int i = 0; i < grid->gridWidth; i++)
+        {
+            free(grid->grid[i]);
+        }
+        free(grid->grid);
+        free(grid);
     }
-    free(grid);
 }

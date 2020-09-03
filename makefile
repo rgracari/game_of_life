@@ -1,6 +1,7 @@
 CC = gcc
 # CFLAGS = -c -Wall -Werror -Wextra
-CFLAGS = -c
+CFLAGS = -c -Wall -Wextra
+# CFLAGS = -c
 
 CPPFLAGS = -I C:\vclib\i686-w64-mingw32\include\SDL2
 LDFLAGS = -L C:\vclib\i686-w64-mingw32\lib

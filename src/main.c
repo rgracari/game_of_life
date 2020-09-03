@@ -1,13 +1,13 @@
 #include "lib.h"
 
-SDL_Window* CreateSDLWindow(const char* name)
+SDL_Window* CreateSDLWindow(const char* name, int width, int height)
 {
     return SDL_CreateWindow(
         name,
         SDL_WINDOWPOS_UNDEFINED,
         SDL_WINDOWPOS_UNDEFINED,
-        800,
-        800,
+        width,
+        height,
         SDL_WINDOW_SHOWN);
 }
 
@@ -21,9 +21,15 @@ void ProcessInput(int* isRunning)
     SDL_Event e;
     while (SDL_PollEvent(&e))
     {
-        if (e.type == SDL_QUIT)
+        switch (e.type)
         {
-            *isRunning = 0;
+            case SDL_QUIT:
+                *isRunning = 0;
+                break;
+            case SDL_KEYDOWN:
+                if (e.key.keysym.sym == SDLK_ESCAPE)
+                    *isRunning = 0;
+                break;
         }
     }
 }
@@ -36,32 +42,64 @@ void InitSDL()
     }
 }
 
+void DrawGrid(Grid* grid, SDL_Renderer* renderer, int wWidth)
+{
+    int gridWidth = grid->gridWidth;
+    int gridTile =  wWidth / grid->gridWidth; 
+
+    for (int y = 0; y < gridWidth; y++)
+    {
+        for (int x = 0; x < gridWidth; x++)
+        {
+            int color = grid->grid[y][x] == Populated ? 0x00 : 0xFF;
+            SDL_Rect rect = {
+                gridTile * x,
+                gridTile * y,
+                gridTile,
+                gridTile
+            };
+            SDL_SetRenderDrawColor(renderer, color, color, color, color);
+            SDL_RenderFillRect(renderer, &rect);
+        }
+    }
+}
+
 int main(int argc, char *argv[])
 {
+    (void)argc;
+    (void)argv;
+    const char* NAME = "Game of life";
+    const int WINDOW_WIDTH = 800;
+    const int WINDOW_HEIGHT = 800;
+
     InitSDL();
 
-    SDL_Window *window = CreateSDLWindow("Game of life");
+    SDL_Window *window = CreateSDLWindow(NAME, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_Renderer *renderer = CreateSDLRenderer(window);
     int isRunning = 1;
 
-    // game loop
-    while (isRunning)
-    {
-        ProcessInput(&isRunning);
-        // Update
-        // Render
-    }
-
-    // int gridWidth = 17;
-    // char **grid = CreateGrid(gridWidth);
+    Grid* grid = CreateGrid(10);
 
     // PopulateCells(grid, gridWidth, 20);
+    
     // for (int i = 0; i < 10; i++)
     // {
     //     PrintGrid(grid, gridWidth);
     //     NewGeneration(grid, gridWidth);
     // }
-    // FreeGrid(grid, gridWidth);
+
+    // game loop
+    while (isRunning)
+    {
+        ProcessInput(&isRunning);
+
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+        SDL_RenderClear(renderer);
+        DrawGrid(grid, renderer, WINDOW_WIDTH);
+        SDL_RenderPresent(renderer);
+    }
+
+    FreeGrid(grid);
 
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);
