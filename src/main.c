@@ -28,8 +28,18 @@ void ProcessInput(int* isRunning)
     }
 }
 
+void InitSDL()
+{
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+        SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+        return;
+    }
+}
+
 int main(int argc, char *argv[])
 {
+    InitSDL();
+
     SDL_Window *window = CreateSDLWindow("Game of life");
     SDL_Renderer *renderer = CreateSDLRenderer(window);
     int isRunning = 1;
@@ -52,5 +62,9 @@ int main(int argc, char *argv[])
     //     NewGeneration(grid, gridWidth);
     // }
     // FreeGrid(grid, gridWidth);
+
+    SDL_DestroyWindow(window);
+    SDL_DestroyRenderer(renderer);
+    SDL_Quit();
     return 0;
 }
