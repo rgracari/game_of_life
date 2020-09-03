@@ -13,7 +13,7 @@ SDL_Window* CreateSDLWindow(const char* name, int width, int height)
 
 SDL_Renderer* CreateSDLRenderer(SDL_Window* window)
 {
-    return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 }
 
 void ProcessInput(int* isRunning)
