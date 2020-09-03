@@ -1,13 +1,11 @@
-# # Variable spéciales
-# # $@	Le nom de la cible
-# # $<	Le nom de la première dépendance
-# # $^	La liste des dépendances
-# # $?	La liste des dépendances plus récentes que la cible
-# # $*	Le nom du fichier sans suffixe
-
 CC = gcc
-CFLAGS = -c -Wall -Werror -Wextra
-# LDFLAGS =
+# CFLAGS = -c -Wall -Werror -Wextra
+CFLAGS = -c
+
+CPPFLAGS = -I C:\vclib\i686-w64-mingw32\include\SDL2
+LDFLAGS = -L C:\vclib\i686-w64-mingw32\lib
+LDLIBS = -lmingw32 -lSDL2main -lSDL2
+
 EXEC = gol.exe
 BIN_PATH = bin
 BIN_INT_PATH = bin-int
@@ -21,10 +19,10 @@ OBJ := $(SRC:$(SRC_PATH)/%.c=$(BIN_INT_PATH)/%.o)
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) -o $(BIN_PATH)/$(EXEC) $^
+	$(CC) -o $(BIN_PATH)/$(EXEC) $^ $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 
 $(BIN_INT_PATH)/%.o: $(SRC_PATH)/%.c
-	$(CC) -o $@ $(CFLAGS) $<
+	$(CC) -o $@ $(CFLAGS) $< $(CPPFLAGS) $(LDFLAGS)
 
 dir:
 	@mkdir $(BIN_PATH)
