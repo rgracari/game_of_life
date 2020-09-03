@@ -78,15 +78,9 @@ int main(int argc, char *argv[])
     SDL_Renderer *renderer = CreateSDLRenderer(window);
     int isRunning = 1;
 
-    Grid* grid = CreateGrid(10);
+    Grid* grid = CreateGrid(100);
 
-    // PopulateCells(grid, gridWidth, 20);
-    
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     PrintGrid(grid, gridWidth);
-    //     NewGeneration(grid, gridWidth);
-    // }
+    PopulateCells(grid, 20);
 
     // game loop
     while (isRunning)
@@ -97,6 +91,7 @@ int main(int argc, char *argv[])
         SDL_RenderClear(renderer);
         DrawGrid(grid, renderer, WINDOW_WIDTH);
         SDL_RenderPresent(renderer);
+        NewGeneration(grid);
     }
 
     FreeGrid(grid);

@@ -1,43 +1,21 @@
 #include "lib.h"
 
-void waitFor(unsigned int secs)
-{
-    unsigned int retTime = time(0) + secs;
-    while ((unsigned int)time(0) < retTime)
-    {
-    }
-}
-
-/*
-void PrintGrid(char **grid, int gridWidth)
-{
-    for (int y = 0; y < gridWidth; y++)
-    {
-        for (int x = 0; x < gridWidth; x++)
-        {
-            printf("%c ", grid[y][x]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-}
-
-void PopulateCells(char **grid, int gridWidth, int rate)
+void PopulateCells(Grid* grid, int rate)
 {
     srand(time(NULL));
     int randomNumber = 0;
+    int gridWidth = grid->gridWidth;
     for (int y = 0; y < gridWidth; y++)
     {
         for (int x = 0; x < gridWidth; x++)
         {
             randomNumber = (rand() % 101);
-            grid[y][x] = (randomNumber <= rate) ? '0' : '-';
+            grid->grid[y][x] = (randomNumber <= rate) ? Populated : Unpopulated;
         }
     }
 }
-*/
-/*
-void NewGeneration(char **grid, int gridWidth)
+
+void NewGeneration(Grid* grid)
 {
     // ( y  x) ( y x) (y x)
     // ( 1 -1) ( 1 0) ( 1 1)
@@ -54,8 +32,9 @@ void NewGeneration(char **grid, int gridWidth)
         {-1, 0},
         {-1, 1}};
 
-    char **copy = CopyGrid(grid, gridWidth);
+    Grid* copy = CopyGrid(grid);
 
+    int gridWidth = copy->gridWidth;
     for (int y = 0; y < gridWidth; y++)
     {
         for (int x = 0; x < gridWidth; x++)
@@ -69,50 +48,49 @@ void NewGeneration(char **grid, int gridWidth)
                 if (yNeighbor >= 0 && yNeighbor < gridWidth &&
                     xNeighbor >= 0 && xNeighbor < gridWidth)
                 {
-                    if (copy[yNeighbor][xNeighbor] == '0')
+                    if (copy->grid[yNeighbor][xNeighbor] == Populated)
                     {
                         neighborCount++;
                     }
                 }
             }
-            if (copy[y][x] == '0')
+            if (copy->grid[y][x] == Populated)
             {
                 if (neighborCount <= 1)
                 {
-                    grid[y][x] = '-';
+                    grid->grid[y][x] = Unpopulated;
                 }
                 else if (neighborCount >= 4)
                 {
-                    grid[y][x] = '-';
+                    grid->grid[y][x] = Unpopulated;
                 }
             }
             else
             {
                 if (neighborCount == 3)
                 {
-                    grid[y][x] = '0';
+                    grid->grid[y][x] = Populated;
                 }
             }
         }
     }
-    FreeGrid(copy, gridWidth);
+    FreeGrid(copy);
 }
-*/
 
-/*
-char **CopyGrid(char **grid, int gridWidth)
+Grid* CopyGrid(Grid* grid)
 {
-    char **copy = CreateGrid(gridWidth);
+    int gridWidth = grid->gridWidth;
+    Grid* gridCopy = CreateGrid(gridWidth);
     for (int y = 0; y < gridWidth; y++)
     {
         for (int x = 0; x < gridWidth; x++)
         {
-            copy[y][x] = grid[y][x];
+            gridCopy->grid[y][x] = grid->grid[y][x];
         }
     }
-    return copy;
+    return gridCopy;
 }
-*/
+
 Grid* CreateGrid(int gridWidth)
 {
     Grid *gridPtr = (Grid*)malloc(sizeof(Grid));

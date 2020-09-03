@@ -24,12 +24,10 @@ enum Cell
     Unpopulated = '-'
 };
 
-void waitFor(unsigned int secs);
 void FreeGrid(Grid* grid);
 Grid* CreateGrid(int gridWidth);
-char **CopyGrid(char **grid, int gridWidth);
-void NewGeneration(char **grid, int gridWidth);
-void PopulateCells(char **grid, int gridWidth, int rate);
-void PrintGrid(char **grid, int gridWidth);
+Grid* CopyGrid(Grid* grid);
+void NewGeneration(Grid* grid);
+void PopulateCells(Grid* grid, int rate);
 
 #endif /* !LIB_H_ */
