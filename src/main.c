@@ -13,7 +13,7 @@ SDL_Window* CreateSDLWindow(const char* name, int width, int height)
 
 SDL_Renderer* CreateSDLRenderer(SDL_Window* window)
 {
-    return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 }
 
 void ProcessInput(int* isRunning)
@@ -78,7 +78,7 @@ int main(int argc, char *argv[])
     SDL_Renderer *renderer = CreateSDLRenderer(window);
     int isRunning = 1;
 
-    Grid* grid = CreateGrid(100);
+    Grid* grid = CreateGrid(400);
 
     PopulateCells(grid, 20);
 
