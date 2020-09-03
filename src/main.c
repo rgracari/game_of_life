@@ -1,18 +1,56 @@
-#include <SDL.h>
-
 #include "lib.h"
+
+SDL_Window* CreateSDLWindow(const char* name)
+{
+    return SDL_CreateWindow(
+        name,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        800,
+        800,
+        SDL_WINDOW_SHOWN);
+}
+
+SDL_Renderer* CreateSDLRenderer(SDL_Window* window)
+{
+    return SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+}
+
+void ProcessInput(int* isRunning)
+{
+    SDL_Event e;
+    while (SDL_PollEvent(&e))
+    {
+        if (e.type == SDL_QUIT)
+        {
+            *isRunning = 0;
+        }
+    }
+}
 
 int main(int argc, char *argv[])
 {
-    int gridWidth = 17;
-    char **grid = CreateGrid(gridWidth);
+    SDL_Window *window = CreateSDLWindow("Game of life");
+    SDL_Renderer *renderer = CreateSDLRenderer(window);
+    int isRunning = 1;
 
-    PopulateCells(grid, gridWidth, 20);
-    for (int i = 0; i < 10; i++)
+    // game loop
+    while (isRunning)
     {
-        PrintGrid(grid, gridWidth);
-        NewGeneration(grid, gridWidth);
+        ProcessInput(&isRunning);
+        // Update
+        // Render
     }
-    FreeGrid(grid, gridWidth);
+
+    // int gridWidth = 17;
+    // char **grid = CreateGrid(gridWidth);
+
+    // PopulateCells(grid, gridWidth, 20);
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     PrintGrid(grid, gridWidth);
+    //     NewGeneration(grid, gridWidth);
+    // }
+    // FreeGrid(grid, gridWidth);
     return 0;
 }
