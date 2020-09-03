@@ -1,7 +1,17 @@
+// #include <SDL.h>
+
 #include "lib.h"
 
-int main(int argc, char *argv[])
+//int main(int argc, char *argv[])
+int main()
 {
+    // SDL_version nb;
+    // SDL_VERSION(&nb);
+
+    //printf("Bienvenue dans la SDL %d", nb.major);
+
+    // gcc src/main.c -o bin/porg -I include -L lib -lmingw32 -lSDL2main -lSDL2
+
     // int gridWidth = 0;
 
     // PrintIntro();
@@ -36,5 +46,6 @@ int main(int argc, char *argv[])
     // }
 
     FreeGrid(grid, gridWidth);
+
     return 0;
 }
